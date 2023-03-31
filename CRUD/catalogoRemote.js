@@ -1,6 +1,4 @@
-// https://crudcrud.com/
-// https://github.com/eduardobreno/ada.tech-968-js-vanilla
-
+// Colocar o link do endpoit gerado pelo crudcrud nesta constante
 const baseUrl = "https://crudcrud.com/api/1b83b312b8bc41b2b66f043e4ac718ad";
 
 async function getAllRemote() {

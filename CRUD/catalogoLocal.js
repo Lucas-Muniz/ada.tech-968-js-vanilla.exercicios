@@ -30,7 +30,7 @@ function criaLista(list) {
     botaoRemover.textContent = "Remover"
 
     pratoDetalhes.textContent = item.prato + ".............." + "R$ " + String(item.preco) + "    ";
-    
+
     itemCatalogo.className = "prato"
 
     itemCatalogo.appendChild(pratoDetalhes);
@@ -49,7 +49,7 @@ function onSubmit() {
 
   if (pratoElemento.value === "") return;
   if (precoElemento.value === "") return;
-  if (catalogo.find((item) => item.prato === prato)){
+  if (catalogo.find((item) => item.prato === prato)) {
     let atualPrato = catalogo.find((item) => item.prato === prato);
     atualPrato.preco = preco;
   } else {
