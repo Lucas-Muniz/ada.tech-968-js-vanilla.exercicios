@@ -1,5 +1,5 @@
 // Colocar o link do endpoit gerado pelo crudcrud nesta constante
-const baseUrl = "https://crudcrud.com/api/1b83b312b8bc41b2b66f043e4ac718ad";
+const baseUrl = "https://crudcrud.com/api/447f3c1793d047998aad195bdaf66395";
 
 async function getAllRemote() {
     const response = await fetch(`${baseUrl}/catalogo`);
