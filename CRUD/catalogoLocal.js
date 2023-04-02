@@ -29,7 +29,7 @@ function criaLista(list) {
     botaoRemover.onclick = () => onclickRemove(item);
     botaoRemover.textContent = "Remover"
 
-    pratoDetalhes.textContent = item.prato + ".............." + "R$ " + String(item.preco) + "    ";
+    pratoDetalhes.textContent = item.prato + " .............. " + "R$ " + String(item.preco) + "    ";
 
     itemCatalogo.className = "prato"
 
