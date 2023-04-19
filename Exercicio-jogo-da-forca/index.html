@@ -1,13 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jogo da Forca</title>
+  <link href="style-hangman-game.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <span class="wrapper" style="font-size:25px"> Jogo da Forca </span>
+  </br>
+
+  <div class="wrapper" style="margin-bottom: 10px">
+    <canvas width="200" height="225"></canvas>
+    <div>
+    <div class="wrapper">
+    <div id="word-container" class="word-container"></div>
+    <button id="word-tip-button" style="justify-content: center; margin-left: 25px;">Mostrar dica da palavra</button>
+    </div>
+    <span id="tip"></span>
+    </div>
+  </div>
+
+  </br>
+
+  <div class="wrapper">
+    <span id="game-result" style="margin-bottom: 10px"></span>
+  </div>
+
+  <div class="wrapper" style="margin-bottom: 25px">
+    <span>Escolha uma letra:</span>
+    </br>
+  </div>
+
+  <div class="wrapper">
+    <div id="virtual-keyboard-container"></div>
+  </div>
+
+
+  </br>
+
+  <div class="wrapper">
+    <button id="reset-button">Reiniciar o jogo</button>
+  </div>
+
+
+  <script type="module" src="/hangman-game.js"></script>
+</body>
+
 </html>
