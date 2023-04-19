@@ -6,35 +6,34 @@ let numberOfWrongGuesses = 0;
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 
-function normalize(str){
+function normalize(str) {
   function toNormalForm(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
   return toNormalForm(str).toUpperCase();
 }
 
-function createLetterBoxes(word){
+function createLetterBoxes(word) {
   const wordContainer = document.querySelector("#word-container");
 
   const numberOfLetters = word.length;
   const normalizedWord = normalize(word);
 
-  for(let letter = 0; letter < numberOfLetters; letter++){
+  for (let letter = 0; letter < numberOfLetters; letter++) {
     const spanItem = document.createElement("span");
     spanItem.classList.add("letter-item");
-    //spanItem.textContent = normalizedWord[letter];
     wordContainer.append(spanItem);
   }
 }
 
-function createMapOfLetters(word){
+function createMapOfLetters(word) {
   let mapLettersPositions = new Map();
   const numberOfLetters = word.length;
   const normalizedWord = normalize(word);
 
-  for(let letterPosition = 0; letterPosition < numberOfLetters; letterPosition++){
+  for (let letterPosition = 0; letterPosition < numberOfLetters; letterPosition++) {
     let letter = normalizedWord[letterPosition];
-    if (mapLettersPositions.has(letter)){
+    if (mapLettersPositions.has(letter)) {
       let vectorPositions = mapLettersPositions.get(letter);
       vectorPositions.push(letterPosition);
       mapLettersPositions.set(letter, vectorPositions);
@@ -45,27 +44,27 @@ function createMapOfLetters(word){
   return mapLettersPositions;
 }
 
-function checkLetterPosition(letter, mapLettersPositions){
-  if(mapLettersPositions.has(letter)){
+function checkLetterPosition(letter, mapLettersPositions) {
+  if (mapLettersPositions.has(letter)) {
     return mapLettersPositions.get(letter);
-  } 
+  }
   return [];
 }
 
-function updateWordContainer(word, positions){
+function updateWordContainer(word, positions) {
   const wordContainer = document.querySelector("#word-container");
   const letterItens = wordContainer.getElementsByClassName("letter-item");
-  for(let position of positions){
+  for (let position of positions) {
     letterItens[position].textContent = word[position];
     //letterItens.classList.remove("letter-item");
     letterItens[position].classList.add("correct-letter-item");
   }
 }
 
-function drawHangman(){
+function drawHangman() {
   const context = document.querySelector("canvas").getContext("2d");
   numberOfWrongGuesses++;
-  switch(numberOfWrongGuesses){
+  switch (numberOfWrongGuesses) {
     case 0:
       break;
     case 1:
@@ -91,31 +90,31 @@ function drawHangman(){
   }
 }
 
-function deactivateVirtualKeyboard(){
+function deactivateVirtualKeyboard() {
   let letterButtons = document.getElementsByClassName("letter-button");
-  for(let button of letterButtons){
+  for (let button of letterButtons) {
     button.disabled = true;
   }
 }
 
-function deactivateGame(){
+function deactivateGame() {
   deactivateVirtualKeyboard();
   let resetButton = document.querySelector("#reset-button");
   //resetButton.textContent = "Reiniciar o jogo";
 }
 
-function highlightMissedWords(wordUpperCase){
+function highlightMissedWords(wordUpperCase) {
   let letterItens = document.getElementsByClassName("letter-item");
-  for(let position = 0; position < wordUpperCase.length; position++){
+  for (let position = 0; position < wordUpperCase.length; position++) {
     let letter = letterItens[position];
-    if(!letter.classList.contains("correct-letter-item")){
+    if (!letter.classList.contains("correct-letter-item")) {
       letter.textContent = wordUpperCase[position];
       letter.style.color = "red";
     }
   }
 }
 
-function stopGame(wordUpperCase){
+function stopGame(wordUpperCase) {
   let spanLoseMessage = document.querySelector("#game-result");
   spanLoseMessage.textContent = "Você perdeu! :( ";
   spanLoseMessage.style.color = "red";
@@ -124,7 +123,7 @@ function stopGame(wordUpperCase){
   highlightMissedWords(wordUpperCase);
 }
 
-function winGame(){
+function winGame() {
   let spanLoseMessage = document.querySelector("#game-result");
   spanLoseMessage.textContent = "Você ganhou! :) ";
   spanLoseMessage.style.color = "green";
@@ -133,96 +132,74 @@ function winGame(){
 }
 
 
-function createVirtualKeyboard(wordUpperCase, mapLettersPositions){
+function createVirtualKeyboard(wordUpperCase, mapLettersPositions) {
   let keyboardContainer = document.querySelector('#virtual-keyboard-container');
 
-  const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
-                    'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-                    'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 
-                    'Y', 'Z'];
+  const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+    'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+    'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+    'Y', 'Z'];
 
   keyboardContainer.classList.add("keyboard-container");
 
-  for (let letter = 0; letter < alphabet.length; letter++){
-      let letterButton = document.createElement("button");
-      letterButton.textContent = alphabet[letter];
-      letterButton.classList.add("letter-button");
-      letterButton.addEventListener("click", (event) => {
-        let positions = checkLetterPosition(event.target.textContent, mapLettersPositions);
-        if (positions.length > 0){
-          updateWordContainer(wordUpperCase, positions);
-          numberOfLetters -= positions.length; 
-          event.target.classList.add("correct-letter-button");
-        } else {
-          drawHangman();
-          event.target.classList.add("incorrect-letter-button");
-        }
-        event.target.disabled = true;
-        if (numberOfLetters === 0){
-          console.log("numberOfLetters", numberOfLetters);
-          winGame();
-        } else if (numberOfWrongGuesses >= 6){
-          console.log("numberOfWrongGuesses", numberOfWrongGuesses);
-          stopGame(wordUpperCase);
-        }
-      });
-      keyboardContainer.append(letterButton);
+  for (let letter = 0; letter < alphabet.length; letter++) {
+    let letterButton = document.createElement("button");
+    letterButton.textContent = alphabet[letter];
+    letterButton.classList.add("letter-button");
+    letterButton.addEventListener("click", (event) => {
+      let positions = checkLetterPosition(event.target.textContent, mapLettersPositions);
+      let spanAttempts = document.querySelector("#number-attempts");
+      if (positions.length > 0) {
+        updateWordContainer(wordUpperCase, positions);
+        numberOfLetters -= positions.length;
+        event.target.classList.add("correct-letter-button");
+      } else {
+        drawHangman();
+        event.target.classList.add("incorrect-letter-button");
+        let spanAttempts = document.querySelector("#number-attempts");
+        spanAttempts.textContent = "Tentativas restantes: " + `${6 - numberOfWrongGuesses}`;
+      }
+
+      event.target.disabled = true;
+
+      if (numberOfLetters === 0) {
+        winGame();
+      } else if (numberOfWrongGuesses >= 6) {
+        stopGame(wordUpperCase);
+      }
+    });
+    keyboardContainer.append(letterButton);
   }
 }
 
-// function setTip(tipText){
-//   let spanTip = document.querySelector("#tip"); 
-//   let buttonTip = document.querySelector("#word-tip-button"); 
-//   buttonTip.addEventListener("click", () => {
-//     spanTip.textContent = "Dica: " + tipText;
-//   });
-// }
-
-function setTip(wordObject){
-  let spanTip = document.querySelector("#tip"); 
-  let buttonTip = document.querySelector("#word-tip-button"); 
-  console.log(wordObject);
+function setTip(wordObject) {
+  let spanTip = document.querySelector("#tip");
+  let buttonTip = document.querySelector("#word-tip-button");
   spanTip.innerHTML = "";
   buttonTip.addEventListener("click", () => {
-    if(wordObject.synonym.length !== 0){
-      if (wordObject.synonym.length === 1){
-        spanTip.innerHTML = `<b>Dica:</b> </br> [Sinônimo] ` + wordObject.synonym;
+    let spanElementTip = document.querySelector("#tip");
+    spanElementTip.innerHTML = "";
+    if (wordObject.synonym.length > 0) {
+      if (wordObject.synonym.length === 1) {
+        spanElementTip.innerHTML = `<b>Dica:</b> </br> [Sinônimo] ` + wordObject.synonym;
       } else {
-        spanTip.innerHTML += `<b>Dica:</b> </br> [Sinônimos] `;
-        for(let synonym of wordObject.synonym){
-          spanTip.innerHTML += `${synonym}` + `, `;
+        spanElementTip.innerHTML += `<b>Dica:</b> </br> [Sinônimos] `;
+        for (let position = 0; position < wordObject.synonym.length; position++) {
+          spanElementTip.innerHTML += `${wordObject.synonym[position]}`;
+          spanElementTip.innerHTML += position === (wordObject.synonym.length - 1) ? `.` : `, `;
         }
       }
     } else {
-      spanTip.innerHTML = `<b>Dica:</b> </br> [Definição] ` + wordObject.definition;
+      spanElementTip.innerHTML = `<b>Dica:</b> </br> [Definição] ` + wordObject.definition;
     }
   });
 }
 
 let numberOfLetters;
 
-async function init(){
-  suporte(context);
 
-  let wordObject = await getNewWordObject();
 
-  let word = wordObject.word;
-  setTip(wordObject);
-
-  numberOfLetters = word.length;
-  numberOfWrongGuesses = 0;
-  let wordUpperCase = word.toUpperCase();
-  createLetterBoxes(word);
-
-  let mapLettersPositions = createMapOfLetters(word);
-  
-  
-  createVirtualKeyboard(wordUpperCase, mapLettersPositions);
-
-  console.log(createMapOfLetters(word));
-}
-
-async function resetGame(){
+async function resetGame() {
   const canvas = document.querySelector("canvas");
   const context = canvas.getContext("2d");
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -232,16 +209,40 @@ async function resetGame(){
   keyboardContainer.innerHTML = "";
   const spanLoseMessage = document.querySelector("#game-result");
   spanLoseMessage.innerHTML = "";
-  let spanTip = document.querySelector("#tip"); 
+  let spanTip = document.querySelector("#tip");
   spanTip.innerHTML = "";
   spanTip.textContent = "";
+  const spanAttempts = document.querySelector("#number-attempts");
+  spanAttempts.textContent = "";
   await init();
 }
 
 let resetButton = document.querySelector("#reset-button");
-resetButton.addEventListener("click", async function (){
+resetButton.addEventListener("click", async function () {
   await resetGame();
 });
+
+async function init() {
+  suporte(context);
+
+  let wordObject = await getNewWordObject();
+  let word = wordObject.word;
+
+  setTip(wordObject);
+
+  numberOfLetters = word.length;
+  numberOfWrongGuesses = 0;
+
+  createLetterBoxes(word);
+
+  let wordUpperCase = word.toUpperCase();
+  let mapLettersPositions = createMapOfLetters(word);
+  createVirtualKeyboard(wordUpperCase, mapLettersPositions);
+
+  let spanAttempts = document.querySelector("#number-attempts");
+  spanAttempts.textContent = "Tentativas restantes: " + `${6 - numberOfWrongGuesses}`;
+
+}
 
 
 await init();

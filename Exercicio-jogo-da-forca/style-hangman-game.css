@@ -16,7 +16,8 @@
 
 .keyboard-container {
     display: grid;
-    grid-template-columns: repeat(6, 50px);
+    grid-template-columns: repeat(9, 50px);
+    align-items: center;
     gap:5px;
 }
 
@@ -53,6 +54,7 @@
 .wrapper {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 25px;
 }
   
